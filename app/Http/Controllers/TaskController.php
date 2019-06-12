@@ -78,7 +78,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view( 'tasks.edit', compact('task'));
     }
 
     /**
@@ -90,7 +90,13 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $task->title = $request->title;
+        $task->description = $request->description;
+
+        $task->save();
+
+        return redirect()->action('TaskController@index');
+
     }
 
     /**
