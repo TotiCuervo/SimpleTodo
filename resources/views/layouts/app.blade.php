@@ -9,8 +9,12 @@
 
     <nav class="nav">
         <a class="nav-link active" href="/home">Home</a>
-        <a class="nav-link" href="/about">About</a>
-        <a class="nav-link" href="/tasks">tasks</a>
+        {{--<a class="nav-link" href="/about">About</a>--}}
+        <a class="nav-link" href="/tasks">Tasks</a>
+        <a class="nav-link" href="/lists">To Do Lists</a>
+
+        {{--<a class="nav-link" href="/lists">Lists</a>x--}}
+
     </nav>
 
     <main class="pt-5">

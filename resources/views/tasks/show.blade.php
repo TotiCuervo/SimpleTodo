@@ -11,6 +11,16 @@
         <div class="col-md-4">
             <a role="button" class="btn btn-secondary" href="/tasks/{{ $task->id }}/edit">Edit Task</a>
         </div>
+        <div class="col-md-4">
+            <form method="Post" action="/tasks/{{ $task->id }}">
+
+                {{ method_field('DELETE') }}
+                {{ csrf_field() }}
+
+                <button class="btn btn-danger" type="submit" >Delete Task</button>
+            </form>
+        </div>
+
     </div>
 
 @stop

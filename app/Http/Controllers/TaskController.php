@@ -40,8 +40,6 @@ class TaskController extends Controller
     public function store(Request $request)
     {
 
-        Log::error($request);
-
         $task = new Task;
 
         $validatedData = $request->validate([
@@ -66,7 +64,6 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        Log::error($task);
         return view('tasks.show', compact('task'));
     }
 
@@ -107,6 +104,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return redirect()->action('TaskController@index');
+
     }
 }

@@ -22,3 +22,7 @@ Route::get('/about', 'PagesController@about');
 //Route::get('/tasks', 'PagesController@tasks');
 
 Route::resource('tasks', 'TaskController');
+
+Route::resource('lists', 'ToDoController');
+
+//Route::resource('todo', 'ToDoController');
