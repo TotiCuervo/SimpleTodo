@@ -4,7 +4,8 @@
     <div class="row">
         <div class="col-md-4 offset-md-4">
             <h2>New Task</h2>
-            <form method="post" action="/tasks">
+            {{--<h3>{{ $list }}</h3>--}}
+            <form method="post" action="/lists/{{ $list->id }}/task">
                 {{ csrf_field() }}
 
                 @if ($errors->any())
@@ -24,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Description</label>
-                    <textarea name="description" required class="form-control {{ $errors->has('description') ? 'is-danger' : '' }}" id="descriptionTextArea" rows="3"></textarea>
+                    <textarea name="description" class="form-control {{ $errors->has('description') ? 'is-danger' : '' }}" id="descriptionTextArea" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

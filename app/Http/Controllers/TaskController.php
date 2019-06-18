@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\ToDo;
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $tasks = Task::all();
@@ -21,92 +20,81 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Todo $list)
     {
-        return view('tasks.create');
+        return view('tasks.create', compact('list'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Todo $list)
     {
-
         $task = new Task;
 
-        $validatedData = $request->validate([
+        $validatedData = request()->validate([
             'title' => 'required|max:50',
-            'description' => 'required',
         ]);
 
-        $task->title =  $request->title;
-        $task->description = $request->description;
+        $task->to_do_id = $list->id;
+        $task->title =  request('title');
+        $task->description = request('description');
 
         $task->save();
 
-//        return view('/tasks');
-        return redirect()->action('TaskController@index');
+        return redirect()->action('ToDoController@show', compact('list'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function show(Task $task)
     {
+        $this->authorize('view', $list);
         return view('tasks.show', compact('task'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
+    public function edit($list_id, $task)
     {
-        return view( 'tasks.edit', compact('task'));
+
+        $task = Task::findorFail($task);
+        $list = ToDo::findorFail($list_id);
+
+        $this->authorize('update', $list);
+
+
+        return view( 'tasks.edit', compact('task'), compact('list'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $id)
     {
+
+        $validatedData = $request->validate([
+            'title' => 'required|max:50',
+        ]);
+
+        $task = Task::findorFail($id);
         $task->title = $request->title;
         $task->description = $request->description;
-
         $task->save();
 
-        return redirect()->action('TaskController@index');
+        $list = ToDo::findorFail($task->to_do_id);
+
+        return redirect()->action('ToDoController@show', compact('list'));
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Task $task)
     {
+        $list = ToDo::findorFail($task->to_do_id);
+
         $task->delete();
 
-        return redirect()->action('TaskController@index');
+        return redirect()->action('ToDoController@show', compact('list'));
+
+    }
+
+    public function complete(Task $task)
+    {
+
+        $task->toggleComplete();
+
+        $list = ToDo::findorFail($task->to_do_id);
+        return redirect()->action('ToDoController@show', compact('list'));
 
     }
 }

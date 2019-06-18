@@ -15,9 +15,12 @@ class CreateToDosTable extends Migration
     {
         Schema::create('to_dos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('owner_id');
             $table->text('name');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->foreign('owner_id')->references('id')->on('users');
+
         });
     }
 

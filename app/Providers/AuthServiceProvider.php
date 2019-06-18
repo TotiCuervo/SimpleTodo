@@ -13,7 +13,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+
+        'App\ToDo' => 'App\Policies\ToDoPolicy',
+        'App\Task' => 'App\Policies\TaskPolicy',
+
     ];
 
     /**
@@ -21,10 +24,16 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Gate $gate)
     {
         $this->registerPolicies();
 
-        //
+        Gate::before(function ($user) {
+
+            if ($user->id == 1) {
+                return true;
+            }
+
+        });
     }
 }

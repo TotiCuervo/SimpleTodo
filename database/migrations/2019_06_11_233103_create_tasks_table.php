@@ -17,7 +17,8 @@ class CreateTasksTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('to_do_id')->nullable();
             $table->text('title');
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->boolean('completed')->default(false);
             $table->timestamps();
         });
     }

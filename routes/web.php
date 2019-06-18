@@ -16,13 +16,28 @@ Route::get('/', function () {
 });
 
 Route::get('/home', 'PagesController@home');
-
 Route::get('/about', 'PagesController@about');
 
-//Route::get('/tasks', 'PagesController@tasks');
 
-Route::resource('tasks', 'TaskController');
+//-------Tasks---------
+//create Task
+Route::get('/lists/{list}/task', 'TaskController@create');
+Route::post('/lists/{list}/task', 'TaskController@store');
+
+//edit Task
+Route::get('/lists/{list}/task/{task}/edit', 'TaskController@edit')->name('edit.task');
+Route::patch('/task/{task}', 'TaskController@update');
+
+//delete Task
+Route::delete('tasks/{task}', "TaskController@destroy");
+
+//toggle completed Task
+Route::patch('/task/{task}/complete', "TaskController@complete");
+//----------------------
 
 Route::resource('lists', 'ToDoController');
 
-//Route::resource('todo', 'ToDoController');
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
