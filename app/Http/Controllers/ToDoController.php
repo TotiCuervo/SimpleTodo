@@ -17,8 +17,12 @@ class ToDoController extends Controller
 
     public function index()
     {
-        $lists = ToDo::where('owner_id', auth()->id())->get();
-        return view('todo.index', compact('lists'));
+
+        return view('todo.index',
+            [
+                'lists' => auth()->user()->todos
+            ]);
+
     }
 
 
@@ -30,6 +34,11 @@ class ToDoController extends Controller
 
     public function store(Request $request)
     {
+
+        $validatedData = $request->validate([
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:100'
+        ]);
 
         $todo = new Todo;
         $todo->name = $request->name;
@@ -47,6 +56,7 @@ class ToDoController extends Controller
 
     public function show(ToDo $list)
     {
+
         $this->authorize('view', $list);
         return view('todo.show', compact('list'));
     }
@@ -62,6 +72,11 @@ class ToDoController extends Controller
 
     public function update(Request $request, ToDo $list)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:100'
+        ]);
+
         $list->name = $request->name;
         $list->description = $request->description;
         $list->save();

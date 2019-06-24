@@ -8,6 +8,7 @@ use App\ToDo;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Expr\List_;
 
 
 class TaskController extends Controller
@@ -27,17 +28,16 @@ class TaskController extends Controller
 
     public function store(Todo $list)
     {
-        $task = new Task;
 
         $validatedData = request()->validate([
             'title' => 'required|max:50',
+            'description' => 'max:200'
         ]);
 
-        $task->to_do_id = $list->id;
-        $task->title =  request('title');
-        $task->description = request('description');
-
-        $task->save();
+        $list->tasks()->create([
+            'title' => request('title'),
+            'description' => request('description')
+        ]);
 
         return redirect()->action('ToDoController@show', compact('list'));
     }
@@ -53,8 +53,6 @@ class TaskController extends Controller
 
         $task = Task::findorFail($task);
         $list = ToDo::findorFail($list_id);
-
-        $this->authorize('update', $list);
 
 
         return view( 'tasks.edit', compact('task'), compact('list'));

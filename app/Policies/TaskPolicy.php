@@ -54,7 +54,7 @@ class TaskPolicy
      */
     public function update(User $user, ToDo $list)
     {
-        return $list->owner_id() == $user->id();
+        return $list->owner_id() === $user->id();
     }
 
     /**

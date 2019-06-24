@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['title, description, completed'];
+    protected $fillable = ['title', 'description', 'completed'];
 
     public function todo()
     {
@@ -23,4 +23,5 @@ class Task extends Model
 
         $this->save();
     }
+
 }

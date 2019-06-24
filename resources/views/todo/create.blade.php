@@ -20,7 +20,7 @@
 
                 <div class="form-group">
                     <label for="exampleInputEmail1">Name of List</label>
-                    <input type="text"  name="name" class="form-control {{ $errors->has('title') ? 'is-danger' : '' }}" id="titleInput" aria-describedby="emailHelp" placeholder="List Name">
+                    <input type="text"  name="name" class="form-control {{ $errors->has('name') ? 'is-danger' : '' }}" id="titleInput" aria-describedby="emailHelp" placeholder="List Name">
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Description</label>
